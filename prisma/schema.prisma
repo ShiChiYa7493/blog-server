@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  nickname  String
+  avatar    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admin")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  sortOrder Int       @default(0) @map("sort_order")
+  createdAt DateTime  @default(now()) @map("created_at")
+  articles  Article[]
+
+  @@map("category")
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  articles  Article[] @relation("ArticleTag")
+
+  @@map("tag")
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Article {
+  id          Int           @id @default(autoincrement())
+  title       String
+  slug        String        @unique
+  summary     String?
+  content     String
+  coverImage  String?       @map("cover_image")
+  status      ArticleStatus @default(DRAFT)
+  categoryId  Int           @map("category_id")
+  viewCount   Int           @default(0) @map("view_count")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  publishedAt DateTime?     @map("published_at")
+
+  category Category  @relation(fields: [categoryId], references: [id])
+  tags     Tag[]     @relation("ArticleTag")
+  comments Comment[]
+
+  @@map("article")
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Comment {
+  id        Int           @id @default(autoincrement())
+  articleId Int           @map("article_id")
+  nickname  String
+  email     String
+  content   String
+  status    CommentStatus @default(PENDING)
+  parentId  Int?          @map("parent_id")
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  article  Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+
+  @@map("comment")
+}
