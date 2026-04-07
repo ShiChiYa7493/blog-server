@@ -6,6 +6,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { ArticleModule } from './modules/article/article.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Global()
 @Module({
@@ -16,6 +17,7 @@ import { CommentModule } from './modules/comment/comment.module';
     TagModule,
     ArticleModule,
     CommentModule,
+    UploadModule,
   ],
   providers: [PrismaService],
   exports: [PrismaService],
