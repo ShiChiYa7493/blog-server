@@ -4,6 +4,7 @@ import { PrismaService } from './prisma.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
+import { ArticleModule } from './modules/article/article.module';
 
 @Global()
 @Module({
@@ -12,6 +13,7 @@ import { TagModule } from './modules/tag/tag.module';
     AuthModule,
     CategoryModule,
     TagModule,
+    ArticleModule,
   ],
   providers: [PrismaService],
   exports: [PrismaService],
