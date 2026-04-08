@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -14,9 +14,9 @@ export class ArticleController {
     return this.articleService.findAll(query);
   }
 
-  @Get('articles/:slug')
-  findBySlug(@Param('slug') slug: string) {
-    return this.articleService.findBySlug(slug);
+  @Get('articles/:id')
+  findById(@Param('id') id: string) {
+    return this.articleService.findById(id);
   }
 
   @Get('search')
@@ -38,13 +38,13 @@ export class ArticleController {
 
   @UseGuards(JwtAuthGuard)
   @Put('admin/articles/:id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateArticleDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateArticleDto) {
     return this.articleService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('admin/articles/:id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.articleService.remove(id);
   }
 }

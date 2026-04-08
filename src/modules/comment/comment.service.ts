@@ -7,8 +7,8 @@ import { CommentStatus } from '@prisma/client';
 export class CommentService {
   constructor(private prisma: PrismaService) {}
 
-  async findByArticleSlug(slug: string) {
-    const article = await this.prisma.article.findUnique({ where: { slug } });
+  async findByArticleId(articleId: string) {
+    const article = await this.prisma.article.findUnique({ where: { id: articleId } });
     if (!article) throw new NotFoundException('Article not found');
 
     return this.prisma.comment.findMany({
@@ -23,8 +23,8 @@ export class CommentService {
     });
   }
 
-  async create(slug: string, dto: CreateCommentDto) {
-    const article = await this.prisma.article.findUnique({ where: { slug } });
+  async create(articleId: string, dto: CreateCommentDto) {
+    const article = await this.prisma.article.findUnique({ where: { id: articleId } });
     if (!article) throw new NotFoundException('Article not found');
 
     return this.prisma.comment.create({

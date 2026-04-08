@@ -46,9 +46,9 @@ enum ArticleStatus {
 }
 
 model Article {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(uuid())
   title       String
-  slug        String        @unique
+  slug        String?       @unique
   summary     String?
   content     String
   coverImage  String?       @map("cover_image")
@@ -74,7 +74,7 @@ enum CommentStatus {
 
 model Comment {
   id        Int           @id @default(autoincrement())
-  articleId Int           @map("article_id")
+  articleId String        @map("article_id")
   nickname  String
   email     String
   content   String

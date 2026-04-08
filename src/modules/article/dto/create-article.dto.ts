@@ -5,8 +5,9 @@ export class CreateArticleDto {
   @IsString()
   title: string;
 
+  @IsOptional()
   @IsString()
-  slug: string;
+  slug?: string;
 
   @IsOptional()
   @IsString()

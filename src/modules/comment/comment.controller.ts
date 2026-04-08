@@ -8,14 +8,14 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 export class CommentController {
   constructor(private commentService: CommentService) {}
 
-  @Get('articles/:slug/comments')
-  findByArticle(@Param('slug') slug: string) {
-    return this.commentService.findByArticleSlug(slug);
+  @Get('articles/:id/comments')
+  findByArticle(@Param('id') id: string) {
+    return this.commentService.findByArticleId(id);
   }
 
-  @Post('articles/:slug/comments')
-  create(@Param('slug') slug: string, @Body() dto: CreateCommentDto) {
-    return this.commentService.create(slug, dto);
+  @Post('articles/:id/comments')
+  create(@Param('id') id: string, @Body() dto: CreateCommentDto) {
+    return this.commentService.create(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)

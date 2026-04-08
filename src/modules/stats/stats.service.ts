@@ -37,10 +37,10 @@ export class StatsService {
         (a) => `
     <item>
       <title><![CDATA[${a.title}]]></title>
-      <link>${siteUrl}/blog/posts/${a.slug}</link>
+      <link>${siteUrl}/blog/posts/${a.id}</link>
       <description><![CDATA[${a.summary || ''}]]></description>
       <pubDate>${a.publishedAt?.toUTCString()}</pubDate>
-      <guid>${siteUrl}/blog/posts/${a.slug}</guid>
+      <guid>${siteUrl}/blog/posts/${a.id}</guid>
       <category>${a.category.name}</category>
     </item>`,
       )

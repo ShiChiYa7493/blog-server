@@ -41,9 +41,9 @@ export class ArticleService {
     };
   }
 
-  async findBySlug(slug: string) {
+  async findById(id: string) {
     const article = await this.prisma.article.findUnique({
-      where: { slug },
+      where: { id },
       include: { category: true, tags: true },
     });
     if (!article) throw new NotFoundException('Article not found');
@@ -89,7 +89,7 @@ export class ArticleService {
     });
   }
 
-  async update(id: number, dto: UpdateArticleDto) {
+  async update(id: string, dto: UpdateArticleDto) {
     await this.ensureExists(id);
     const { tagIds, ...data } = dto;
 
@@ -113,7 +113,7 @@ export class ArticleService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.ensureExists(id);
     return this.prisma.article.delete({ where: { id } });
   }
@@ -146,7 +146,7 @@ export class ArticleService {
     };
   }
 
-  private async ensureExists(id: number) {
+  private async ensureExists(id: string) {
     const article = await this.prisma.article.findUnique({ where: { id } });
     if (!article) throw new NotFoundException('Article not found');
   }
