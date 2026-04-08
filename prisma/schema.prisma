@@ -88,3 +88,16 @@ model Comment {
 
   @@map("comment")
 }
+
+model GalleryImage {
+  id          Int      @id @default(autoincrement())
+  filename    String
+  url         String
+  title       String?
+  description String?
+  size        Int
+  mimeType    String   @map("mime_type")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("gallery_image")
+}

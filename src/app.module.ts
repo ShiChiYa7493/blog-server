@@ -8,6 +8,7 @@ import { ArticleModule } from './modules/article/article.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { StatsModule } from './modules/stats/stats.module';
+import { GalleryModule } from './modules/gallery/gallery.module';
 
 @Global()
 @Module({
@@ -20,6 +21,7 @@ import { StatsModule } from './modules/stats/stats.module';
     CommentModule,
     UploadModule,
     StatsModule,
+    GalleryModule,
   ],
   providers: [PrismaService],
   exports: [PrismaService],
