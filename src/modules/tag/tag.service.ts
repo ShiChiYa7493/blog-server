@@ -24,17 +24,17 @@ export class TagService {
     return this.prisma.tag.create({ data: dto });
   }
 
-  async update(id: number, dto: UpdateTagDto) {
+  async update(id: string, dto: UpdateTagDto) {
     await this.ensureExists(id);
     return this.prisma.tag.update({ where: { id }, data: dto });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.ensureExists(id);
     return this.prisma.tag.delete({ where: { id } });
   }
 
-  private async ensureExists(id: number) {
+  private async ensureExists(id: string) {
     const tag = await this.prisma.tag.findUnique({ where: { id } });
     if (!tag) throw new NotFoundException('Tag not found');
   }

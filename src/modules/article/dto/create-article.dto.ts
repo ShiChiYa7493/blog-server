@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsInt, IsEnum, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsArray } from 'class-validator';
 import { ArticleStatus } from '@prisma/client';
 
 export class CreateArticleDto {
@@ -23,11 +23,11 @@ export class CreateArticleDto {
   @IsEnum(ArticleStatus)
   status: ArticleStatus;
 
-  @IsInt()
-  categoryId: number;
+  @IsString()
+  categoryId: string;
 
   @IsOptional()
   @IsArray()
-  @IsInt({ each: true })
-  tagIds?: number[];
+  @IsString({ each: true })
+  tagIds?: string[];
 }

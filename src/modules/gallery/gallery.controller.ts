@@ -1,6 +1,6 @@
 import {
   Controller, Get, Post, Put, Delete,
-  Body, Param, Query, ParseIntPipe,
+  Body, Param, Query,
   UseGuards, UseInterceptors, UploadedFile, BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -49,14 +49,14 @@ export class GalleryController {
   // Admin: update image info
   @UseGuards(JwtAuthGuard)
   @Put('admin/gallery/:id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateGalleryDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateGalleryDto) {
     return this.galleryService.update(id, dto);
   }
 
   // Admin: delete image
   @UseGuards(JwtAuthGuard)
   @Delete('admin/gallery/:id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.galleryService.remove(id);
   }
 }

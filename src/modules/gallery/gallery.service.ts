@@ -35,13 +35,13 @@ export class GalleryService {
     });
   }
 
-  async update(id: number, dto: UpdateGalleryDto) {
+  async update(id: string, dto: UpdateGalleryDto) {
     const image = await this.prisma.galleryImage.findUnique({ where: { id } });
     if (!image) throw new NotFoundException('Image not found');
     return this.prisma.galleryImage.update({ where: { id }, data: dto });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const image = await this.prisma.galleryImage.findUnique({ where: { id } });
     if (!image) throw new NotFoundException('Image not found');
 

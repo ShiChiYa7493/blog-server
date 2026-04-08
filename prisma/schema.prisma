@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Admin {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   username  String   @unique
   password  String
   nickname  String
@@ -20,7 +20,7 @@ model Admin {
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(uuid())
   name      String    @unique
   slug      String    @unique
   sortOrder Int       @default(0) @map("sort_order")
@@ -31,7 +31,7 @@ model Category {
 }
 
 model Tag {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(uuid())
   name      String    @unique
   slug      String    @unique
   createdAt DateTime  @default(now()) @map("created_at")
@@ -53,7 +53,7 @@ model Article {
   content     String
   coverImage  String?       @map("cover_image")
   status      ArticleStatus @default(DRAFT)
-  categoryId  Int           @map("category_id")
+  categoryId  String        @map("category_id")
   viewCount   Int           @default(0) @map("view_count")
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
@@ -73,13 +73,13 @@ enum CommentStatus {
 }
 
 model Comment {
-  id        Int           @id @default(autoincrement())
+  id        String        @id @default(uuid())
   articleId String        @map("article_id")
   nickname  String
   email     String
   content   String
   status    CommentStatus @default(PENDING)
-  parentId  Int?          @map("parent_id")
+  parentId  String?       @map("parent_id")
   createdAt DateTime      @default(now()) @map("created_at")
 
   article  Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
@@ -90,7 +90,7 @@ model Comment {
 }
 
 model GalleryImage {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   filename    String
   url         String
   title       String?

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -21,13 +21,13 @@ export class TagController {
 
   @UseGuards(JwtAuthGuard)
   @Put('admin/tags/:id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTagDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateTagDto) {
     return this.tagService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('admin/tags/:id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.tagService.remove(id);
   }
 }

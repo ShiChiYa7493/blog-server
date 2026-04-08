@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsOptional, IsInt } from 'class-validator';
+import { IsString, IsEmail, IsOptional } from 'class-validator';
 
 export class CreateCommentDto {
   @IsString()
@@ -11,6 +11,6 @@ export class CreateCommentDto {
   content: string;
 
   @IsOptional()
-  @IsInt()
-  parentId?: number;
+  @IsString()
+  parentId?: string;
 }

@@ -30,7 +30,7 @@ export class AuthService {
     };
   }
 
-  async getProfile(adminId: number) {
+  async getProfile(adminId: string) {
     const admin = await this.prisma.admin.findUnique({
       where: { id: adminId },
       select: { id: true, username: true, nickname: true, avatar: true, createdAt: true },
@@ -38,7 +38,7 @@ export class AuthService {
     return admin;
   }
 
-  async updateProfile(adminId: number, data: { nickname?: string; avatar?: string; password?: string }) {
+  async updateProfile(adminId: string, data: { nickname?: string; avatar?: string; password?: string }) {
     const updateData: any = {};
     if (data.nickname) updateData.nickname = data.nickname;
     if (data.avatar) updateData.avatar = data.avatar;

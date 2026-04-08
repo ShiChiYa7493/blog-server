@@ -24,17 +24,17 @@ export class CategoryService {
     return this.prisma.category.create({ data: dto });
   }
 
-  async update(id: number, dto: UpdateCategoryDto) {
+  async update(id: string, dto: UpdateCategoryDto) {
     await this.ensureExists(id);
     return this.prisma.category.update({ where: { id }, data: dto });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.ensureExists(id);
     return this.prisma.category.delete({ where: { id } });
   }
 
-  private async ensureExists(id: number) {
+  private async ensureExists(id: string) {
     const category = await this.prisma.category.findUnique({ where: { id } });
     if (!category) throw new NotFoundException('Category not found');
   }

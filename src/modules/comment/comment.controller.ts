@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -26,13 +26,13 @@ export class CommentController {
 
   @UseGuards(JwtAuthGuard)
   @Put('admin/comments/:id')
-  updateStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCommentDto) {
+  updateStatus(@Param('id') id: string, @Body() dto: UpdateCommentDto) {
     return this.commentService.updateStatus(id, dto.status);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('admin/comments/:id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.commentService.remove(id);
   }
 }

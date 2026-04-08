@@ -52,13 +52,13 @@ export class CommentService {
     };
   }
 
-  async updateStatus(id: number, status: CommentStatus) {
+  async updateStatus(id: string, status: CommentStatus) {
     const comment = await this.prisma.comment.findUnique({ where: { id } });
     if (!comment) throw new NotFoundException('Comment not found');
     return this.prisma.comment.update({ where: { id }, data: { status } });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const comment = await this.prisma.comment.findUnique({ where: { id } });
     if (!comment) throw new NotFoundException('Comment not found');
     return this.prisma.comment.delete({ where: { id } });
