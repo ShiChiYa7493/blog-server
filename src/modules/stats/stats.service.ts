@@ -37,10 +37,10 @@ export class StatsService {
         (a) => `
     <item>
       <title><![CDATA[${a.title}]]></title>
-      <link>${siteUrl}/posts/${a.slug}</link>
+      <link>${siteUrl}/blog/posts/${a.slug}</link>
       <description><![CDATA[${a.summary || ''}]]></description>
       <pubDate>${a.publishedAt?.toUTCString()}</pubDate>
-      <guid>${siteUrl}/posts/${a.slug}</guid>
+      <guid>${siteUrl}/blog/posts/${a.slug}</guid>
       <category>${a.category.name}</category>
     </item>`,
       )
@@ -49,9 +49,9 @@ export class StatsService {
     return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Shichiya Blog</title>
-    <link>${siteUrl}</link>
-    <description>Tech and Life Blog</description>
+    <title>优川七夜的博客</title>
+    <link>${siteUrl}/blog</link>
+    <description>今乗り越え 未来へと Weigh Anchor!</description>
     <language>zh-CN</language>
     ${items}
   </channel>
