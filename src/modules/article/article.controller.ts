@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -15,8 +16,9 @@ export class ArticleController {
   }
 
   @Get('articles/:id')
-  findById(@Param('id') id: string) {
-    return this.articleService.findById(id);
+  findById(@Param('id') id: string, @Req() req: Request) {
+    const ip = (req.headers['x-real-ip'] as string) || (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.ip;
+    return this.articleService.findById(id, ip);
   }
 
   @Get('search')
