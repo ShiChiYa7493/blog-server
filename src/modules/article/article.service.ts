@@ -7,18 +7,17 @@ import { ArticleStatus } from '@prisma/client';
 
 @Injectable()
 export class ArticleService {
-  // IP-based view dedup: key = "articleId:ip", value = expiry timestamp
-  private viewCache = new Map<string, number>();
-  private readonly VIEW_COOLDOWN = 10 * 60 * 1000; // 10 minutes
+  // IP-based view dedup: key = "articleId:ip", value = date string (YYYY-MM-DD)
+  private viewCache = new Map<string, string>();
 
   constructor(private prisma: PrismaService) {
-    // Clean expired entries every 5 minutes
+    // Clean stale entries daily at midnight-ish (check every hour)
     setInterval(() => {
-      const now = Date.now();
-      for (const [key, expiry] of this.viewCache) {
-        if (now > expiry) this.viewCache.delete(key);
+      const today = new Date().toISOString().slice(0, 10);
+      for (const [key, date] of this.viewCache) {
+        if (date !== today) this.viewCache.delete(key);
       }
-    }, 5 * 60 * 1000);
+    }, 60 * 60 * 1000);
   }
 
   async findAll(query: QueryArticleDto) {
@@ -60,11 +59,11 @@ export class ArticleService {
     });
     if (!article) throw new NotFoundException('Article not found');
 
-    // Increment view count (IP dedup: same IP only counts once per 10 min)
+    // Increment view count (IP dedup: same IP only counts once per calendar day)
     const cacheKey = `${id}:${ip || 'unknown'}`;
-    const now = Date.now();
-    if (!this.viewCache.has(cacheKey) || now > (this.viewCache.get(cacheKey) || 0)) {
-      this.viewCache.set(cacheKey, now + this.VIEW_COOLDOWN);
+    const today = new Date().toISOString().slice(0, 10);
+    if (this.viewCache.get(cacheKey) !== today) {
+      this.viewCache.set(cacheKey, today);
       await this.prisma.article.update({
         where: { id: article.id },
         data: { viewCount: { increment: 1 } },
