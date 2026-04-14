@@ -11,6 +11,6 @@ async function bootstrap() {
   app.enableCors();
   // Serve uploaded files statically
   app.useStaticAssets(join(process.cwd(), '..', '..', 'uploads'), { prefix: '/uploads/' });
-  await app.listen(process.env.PORT || 3001);
+  await app.listen(process.env.PORT || 3001, process.env.HOST || '127.0.0.1');
 }
 bootstrap();
