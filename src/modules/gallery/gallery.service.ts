@@ -8,14 +8,19 @@ import { join } from 'path';
 export class GalleryService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(page = 1, limit = 20) {
+  async findAll(page = 1, limit = 20, category?: string) {
+    const where: { category?: { slug: string } } = {};
+    if (category) where.category = { slug: category };
+
     const [images, total] = await Promise.all([
       this.prisma.galleryImage.findMany({
+        where,
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: 'desc' },
+        include: { category: true },
       }),
-      this.prisma.galleryImage.count(),
+      this.prisma.galleryImage.count({ where }),
     ]);
 
     return {
@@ -24,28 +29,33 @@ export class GalleryService {
     };
   }
 
-  async upload(file: Express.Multer.File) {
+  async upload(file: Express.Multer.File, categoryId?: string) {
     return this.prisma.galleryImage.create({
       data: {
         filename: file.filename,
         url: `/uploads/${file.filename}`,
         size: file.size,
         mimeType: file.mimetype,
+        categoryId: categoryId || null,
       },
+      include: { category: true },
     });
   }
 
   async update(id: string, dto: UpdateGalleryDto) {
     const image = await this.prisma.galleryImage.findUnique({ where: { id } });
     if (!image) throw new NotFoundException('Image not found');
-    return this.prisma.galleryImage.update({ where: { id }, data: dto });
+    return this.prisma.galleryImage.update({
+      where: { id },
+      data: dto,
+      include: { category: true },
+    });
   }
 
   async remove(id: string) {
     const image = await this.prisma.galleryImage.findUnique({ where: { id } });
     if (!image) throw new NotFoundException('Image not found');
 
-    // Try to delete the file from disk
     try {
       const filePath = join(process.cwd(), '../../uploads', image.filename);
       unlinkSync(filePath);

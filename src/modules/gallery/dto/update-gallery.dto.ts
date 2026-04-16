@@ -8,4 +8,8 @@ export class UpdateGalleryDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsString()
+  categoryId?: string | null;
 }

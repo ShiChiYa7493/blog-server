@@ -16,8 +16,12 @@ export class GalleryController {
 
   // Public: list gallery images
   @Get('gallery')
-  findAll(@Query('page') page?: string, @Query('limit') limit?: string) {
-    return this.galleryService.findAll(Number(page) || 1, Number(limit) || 20);
+  findAll(
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('category') category?: string,
+  ) {
+    return this.galleryService.findAll(Number(page) || 1, Number(limit) || 20, category);
   }
 
   // Admin: upload image to gallery
@@ -41,9 +45,12 @@ export class GalleryController {
       },
     }),
   )
-  upload(@UploadedFile() file: Express.Multer.File) {
+  upload(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('categoryId') categoryId?: string,
+  ) {
     if (!file) throw new BadRequestException('No file uploaded');
-    return this.galleryService.upload(file);
+    return this.galleryService.upload(file, categoryId);
   }
 
   // Admin: update image info

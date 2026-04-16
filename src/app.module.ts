@@ -9,6 +9,7 @@ import { CommentModule } from './modules/comment/comment.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { StatsModule } from './modules/stats/stats.module';
 import { GalleryModule } from './modules/gallery/gallery.module';
+import { GalleryCategoryModule } from './modules/gallery-category/gallery-category.module';
 
 @Global()
 @Module({
@@ -22,6 +23,7 @@ import { GalleryModule } from './modules/gallery/gallery.module';
     UploadModule,
     StatsModule,
     GalleryModule,
+    GalleryCategoryModule,
   ],
   providers: [PrismaService],
   exports: [PrismaService],

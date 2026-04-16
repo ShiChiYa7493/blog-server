@@ -89,6 +89,17 @@ model Comment {
   @@map("comment")
 }
 
+model GalleryCategory {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  slug      String         @unique
+  sortOrder Int            @default(0) @map("sort_order")
+  createdAt DateTime       @default(now()) @map("created_at")
+  images    GalleryImage[]
+
+  @@map("gallery_category")
+}
+
 model GalleryImage {
   id          String   @id @default(uuid())
   filename    String
@@ -97,7 +108,10 @@ model GalleryImage {
   description String?
   size        Int
   mimeType    String   @map("mime_type")
+  categoryId  String?  @map("category_id")
   createdAt   DateTime @default(now()) @map("created_at")
+
+  category GalleryCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@map("gallery_image")
 }
