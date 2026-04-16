@@ -31,6 +31,7 @@ export class CommentService {
       data: {
         ...dto,
         articleId: article.id,
+        status: CommentStatus.APPROVED,
       },
     });
   }
