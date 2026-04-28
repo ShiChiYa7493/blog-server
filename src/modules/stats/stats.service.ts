@@ -7,13 +7,16 @@ export class StatsService {
   constructor(private prisma: PrismaService) {}
 
   async getDashboardStats() {
-    const [articleCount, publishedCount, draftCount, commentCount, totalViews] = await Promise.all([
-      this.prisma.article.count(),
-      this.prisma.article.count({ where: { status: ArticleStatus.PUBLISHED } }),
-      this.prisma.article.count({ where: { status: ArticleStatus.DRAFT } }),
-      this.prisma.comment.count(),
-      this.prisma.article.aggregate({ _sum: { viewCount: true } }),
-    ]);
+    const [articleCount, publishedCount, draftCount, commentCount, totalViews] =
+      await Promise.all([
+        this.prisma.article.count(),
+        this.prisma.article.count({
+          where: { status: ArticleStatus.PUBLISHED },
+        }),
+        this.prisma.article.count({ where: { status: ArticleStatus.DRAFT } }),
+        this.prisma.comment.count(),
+        this.prisma.article.aggregate({ _sum: { viewCount: true } }),
+      ]);
 
     return {
       articleCount,
@@ -51,7 +54,7 @@ export class StatsService {
   <channel>
     <title>优川七夜的博客</title>
     <link>${siteUrl}/blog</link>
-    <description>今乗り越え 未来へと Weigh Anchor!</description>
+    <description>跨越现今 前往未来 Weigh Anchor!</description>
     <language>zh-CN</language>
     ${items}
   </channel>
