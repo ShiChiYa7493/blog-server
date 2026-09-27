@@ -49,4 +49,4 @@ npm run start:prod
 
 在博客仓库里对应 `npm run dev:server` 和 `npm run build:server`。API 默认是 `http://127.0.0.1:3001/api`。生产环境由 PM2 进程 `blog-api` 运行，Nginx 代理 `/api/`。
 
-整站部署见 [shichiya-blog](https://github.com/ShiChiYa7493/shichiya-blog)。这个仓库不负责前端页面，也不负责 Warframe 机器人。
+整站部署见 [shichiya-blog](https://github.com/ShiChiYa7493/shichiya-blog)。这个仓库不负责前端页面。
