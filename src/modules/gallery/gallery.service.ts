@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
+import { CosStorageService } from '../../common/cos-storage.service';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
-import { unlinkSync } from 'fs';
-import { join } from 'path';
 
 @Injectable()
 export class GalleryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private storage: CosStorageService,
+  ) {}
 
   async findAll(page = 1, limit = 20, category?: string) {
     const where: { category?: { slug: string } } = {};
@@ -30,10 +32,11 @@ export class GalleryService {
   }
 
   async upload(file: Express.Multer.File, categoryId?: string) {
+    const stored = await this.storage.save(file.originalname, file.buffer, file.mimetype);
     return this.prisma.galleryImage.create({
       data: {
-        filename: file.filename,
-        url: `/uploads/${file.filename}`,
+        filename: stored.filename,
+        url: stored.url,
         size: file.size,
         mimeType: file.mimetype,
         categoryId: categoryId || null,
@@ -56,12 +59,8 @@ export class GalleryService {
     const image = await this.prisma.galleryImage.findUnique({ where: { id } });
     if (!image) throw new NotFoundException('Image not found');
 
-    try {
-      const filePath = join(process.cwd(), '../../uploads', image.filename);
-      unlinkSync(filePath);
-    } catch {
-      // File may not exist, continue with DB deletion
-    }
+    // COS object for absolute URLs, local file otherwise; failures are tolerated
+    await this.storage.remove(image.filename, image.url);
 
     return this.prisma.galleryImage.delete({ where: { id } });
   }

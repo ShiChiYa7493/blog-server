@@ -1,5 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { CosStorageService } from './common/cos-storage.service';
 import { PrismaService } from './prisma.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
@@ -25,7 +26,7 @@ import { GalleryCategoryModule } from './modules/gallery-category/gallery-catego
     GalleryModule,
     GalleryCategoryModule,
   ],
-  providers: [PrismaService],
-  exports: [PrismaService],
+  providers: [PrismaService, CosStorageService],
+  exports: [PrismaService, CosStorageService],
 })
 export class AppModule {}
