@@ -1,7 +1,7 @@
 import { extname } from 'path';
 
 /** Key prefix that separates blog images from the Warframe bot attachments in the shared bucket. */
-export const BLOG_OBJECT_PREFIX = 'blog/uploads';
+export const BLOG_OBJECT_PREFIX = 'uploads/blog';
 
 /** Same naming scheme the old disk storage used, so existing gallery rows stay compatible. */
 export function generateUploadFilename(originalname: string): string {
